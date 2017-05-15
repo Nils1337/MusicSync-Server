@@ -23,15 +23,16 @@ var Song = sequelize.define('song', {
     },
     title: {
         type: Sequelize.STRING,
-        unique: 'uniqueConstraint',
         allowNull: false
     },
     artist: {
         type: Sequelize.STRING,
-        unique: 'uniqueConstraint',
         allowNull: false
     },
     album: {
+        type: Sequelize.STRING
+    },
+    albumArtist: {
         type: Sequelize.STRING
     },
     dir: {
@@ -54,13 +55,21 @@ var Song = sequelize.define('song', {
     duration: {
         type: Sequelize.INTEGER
     },
+    picture: {
+        type: Sequelize.BLOB
+    },
     library: {
         type: Sequelize.INTEGER,
         references: {
             model: Library,
             key: 'id'
         }
+    },
+    updated: {
+        type: Sequelize.DATE
     }
+}, {
+    timestamps: false
 })
 
 module.exports.Song = Song;

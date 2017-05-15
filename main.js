@@ -9,25 +9,34 @@ var Watcher = require('./watcher.js');
 }).listen(8081);
 */
 
-Song.sync({force: true});
-Library.sync({force: true}).then(() => {
-    createLibrary();
+var dropTables = true;
+
+Song.sync({force: dropTables});
+Library.sync({force: dropTables}).then(() => {
+    createWatcher();
 });
 
-function createLibrary() {
-    Library.create({
-        name: 'Library1',
-        path: 'music/'
-    }).then(()=> {
-        createWatcher();
+function createLibrary(name) {
+    return Library.create({
+        name: name,
+        path: 'music/' + name
     })
 }
 
 function createWatcher() {
     var watcher = []
     Library.findAll().then((libraries) => {
-        for (library of libraries) {
-            watcher.push(new Watcher(library))
+        if (libraries.length == 0) {
+            createLibrary("Library1").then(() => {
+                createLibrary("Library2").then(() => {
+                    createWatcher();
+                })
+            })
+        }
+        else {
+            for (library of libraries) {
+                watcher.push(new Watcher(library))
+            }
         }
     }) 
 }
