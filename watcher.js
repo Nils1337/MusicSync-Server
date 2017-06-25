@@ -93,7 +93,6 @@ var Watcher = function(library) {
                 return;
             }
             stream.close();
-            console.log(metadata);
             if (update) {
                 updateSong(song, metadata, path)         
             }
