@@ -1,8 +1,9 @@
 const Sequelize = require('sequelize');
+var config = require('./config.js')
 
 var sequelize = new Sequelize('database', null, null, {
     dialect: 'sqlite',
-    storage: 'test.sqlite'
+    storage: config.dbFileName
 })
 
 var Library = sequelize.define('library', {

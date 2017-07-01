@@ -5,9 +5,7 @@ var Song = require('./repo.js').Song;
 var Watcher = require('./watcher.js');
 var fs = require('fs');
 var path = require('path');
-
-var dropTables = false;
-var port = 8080;
+var config = require('./config.js')
 
 var app = express();
 /*http.createServer(function(request, response) {
@@ -75,34 +73,24 @@ router.route('/songs/:song_id')
 
 
 app.use('/', router);
-app.listen(port);
+app.listen(config.port);
 
-Song.sync({force: dropTables});
-Library.sync({force: dropTables}).then(() => {
-    createWatcher();
-});
-
-function createLibrary(name) {
-    return Library.create({
-        name: name,
-        path: 'music/' + name
+Song.sync({force: config.dropSongsOnStart});
+Library.sync({force: true}).then(() => {
+    var promises = []
+    for (library of config.libraries) {
+        promises.push(Library.create(library))
+    }
+    Promise.all(promises).then(function() {
+        createWatcher();
     })
-}
+});
 
 function createWatcher() {
     var watcher = []
     Library.findAll().then((libraries) => {
-        if (libraries.length == 0) {
-            createLibrary("Library1").then(() => {
-                createLibrary("Library2").then(() => {
-                    createWatcher();
-                })
-            })
-        }
-        else {
-            for (library of libraries) {
-                watcher.push(new Watcher(library))
-            }
+        for (library of libraries) {
+            watcher.push(new Watcher(library))
         }
     }) 
 }
