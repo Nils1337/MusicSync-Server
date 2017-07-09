@@ -4,8 +4,9 @@ var Path = require('path');
 var Song = require('./repo.js').Song;
 var mm = require('music-metadata');
 var Promise = require('bluebird');
+const uuid1 = require('uuid/v1')
+var config = require('./config.js')
 
-var deleteDelay = 30 * 1000;
 var now;
 
 var Watcher = function(library) {
@@ -28,7 +29,7 @@ var Watcher = function(library) {
     watcher.on('ready', () => {
         //delete all songs not updated during initial scan
         //but wait for all add events to be processed
-        Promise.delay(deleteDelay).then(() => {
+        Promise.delay(config.deleteDelay).then(() => {
             Song.findAll({where: {
                 updated: {
                     $lt: now
@@ -116,6 +117,7 @@ var Watcher = function(library) {
             picture = metadata.common.picture[0]
         }
         return {
+            id: uuid1(),
             artist: metadata.common.artists[0],
             title: metadata.common.title,
             album: metadata.common.album,

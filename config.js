@@ -4,6 +4,7 @@ config.port = 8080;
 config.protocol = "http";
 config.dbFileName = "songs.sqlite"
 config.dropSongsOnStart = false;
+config.deleteDelay = 30 * 1000;
 
 config.libraries = [];
 config.libraries.push({

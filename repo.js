@@ -7,6 +7,10 @@ var sequelize = new Sequelize('database', null, null, {
 })
 
 var Library = sequelize.define('library', {
+    id: {
+        type: Sequelize.STRING,
+        primaryKey: true
+    },
     name: {
         type: Sequelize.STRING,
         unique: true
@@ -18,9 +22,8 @@ var Library = sequelize.define('library', {
 
 var Song = sequelize.define('song', {
     id: {
-        type: Sequelize.INTEGER,
-        primaryKey: true,
-        autoIncrement: true
+        type: Sequelize.STRING,
+        primaryKey: true
     },
     title: {
         type: Sequelize.STRING,
@@ -60,7 +63,7 @@ var Song = sequelize.define('song', {
         type: Sequelize.BLOB
     },
     library: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         references: {
             model: Library,
             key: 'id'

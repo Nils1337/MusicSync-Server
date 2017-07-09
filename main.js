@@ -6,6 +6,7 @@ var Watcher = require('./watcher.js');
 var fs = require('fs');
 var path = require('path');
 var config = require('./config.js')
+const uuid1 = require('uuid/v1')
 
 var app = express();
 /*http.createServer(function(request, response) {
@@ -79,7 +80,7 @@ Song.sync({force: config.dropSongsOnStart});
 Library.sync({force: true}).then(() => {
     var promises = []
     for (library of config.libraries) {
-        promises.push(Library.create(library))
+        promises.push(Library.create(newLibrary(library)))
     }
     Promise.all(promises).then(function() {
         createWatcher();
@@ -93,4 +94,12 @@ function createWatcher() {
             watcher.push(new Watcher(library))
         }
     }) 
+}
+
+function newLibrary(configLibrary) {
+    return {
+        id: uuid1(),
+        name: configLibrary.name,
+        path: configLibrary.path
+    }
 }
