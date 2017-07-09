@@ -14,6 +14,7 @@ var app = express();
     response.end("Hello World\n");
 }).listen(8081);
 */
+var now = new Date();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -80,10 +81,19 @@ Song.sync({force: config.dropSongsOnStart});
 Library.sync({force: true}).then(() => {
     var promises = []
     for (library of config.libraries) {
-        promises.push(Library.create(newLibrary(library)))
+        promises.push(updateOrCreateLibrary(library))
     }
     Promise.all(promises).then(function() {
-        createWatcher();
+        Library.findAll({where: {
+             updated: {
+                 $lt: now
+            }
+        }}).then((libraries) => {
+            for (library of libraries) {
+                 library.destroy();
+            }
+            createWatcher();
+         })
     })
 });
 
@@ -96,10 +106,25 @@ function createWatcher() {
     }) 
 }
 
-function newLibrary(configLibrary) {
+function updateOrCreateLibrary(configLibrary) {
+    return Library.findOne({where: {path: configLibrary.path}}).then((library) => {
+        if (library) {
+            return library.update(libraryObject(configLibrary, library.id))
+        }
+        else {
+            return Library.create(libraryObject(configLibrary, null))
+        }
+    })
+}
+
+function libraryObject(configLibrary, id) {
+    if (!id) {
+        id = uuid1()
+    }
     return {
-        id: uuid1(),
+        id: id,
         name: configLibrary.name,
-        path: configLibrary.path
+        path: configLibrary.path,
+        updated: new Date()
     }
 }

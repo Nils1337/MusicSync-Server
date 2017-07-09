@@ -104,20 +104,23 @@ var Watcher = function(library) {
     }
     
     function updateSong(song, metadata, path) {
-        song.update(newSong(metadata, path));
+        song.update(songObject(metadata, path, song.id));
     }
 
     function createSong(metadata, path) {
-        Song.create(newSong(metadata, path));
+        Song.create(songObject(metadata, path, null));
     }
 
-    function newSong(metadata, path) {
+    function songObject(metadata, path, id) {
         var picture;
         if (metadata.common.picture) {
             picture = metadata.common.picture[0]
         }
+        if (!id) {
+            id = uuid1()
+        }
         return {
-            id: uuid1(),
+            id: id,
             artist: metadata.common.artists[0],
             title: metadata.common.title,
             album: metadata.common.album,

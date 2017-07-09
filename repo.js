@@ -17,7 +17,12 @@ var Library = sequelize.define('library', {
     },
     path: {
         type: Sequelize.STRING
+    },
+    updated: {
+        type: Sequelize.DATE
     }
+}, {
+    timestamps: false
 })
 
 var Song = sequelize.define('song', {
