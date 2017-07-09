@@ -2,3 +2,4 @@ node_modules
 music
 .vscode
 *.sqlite
+config.js
