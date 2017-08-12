@@ -13,8 +13,7 @@ var Library = sequelize.define('library', {
         primaryKey: true
     },
     name: {
-        type: Sequelize.STRING,
-        unique: true
+        type: Sequelize.STRING
     },
     path: {
         type: Sequelize.STRING
