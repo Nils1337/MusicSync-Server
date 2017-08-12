@@ -4,12 +4,16 @@ var Path = require('path');
 var Song = require('./repo.js').Song;
 var mm = require('music-metadata');
 var Promise = require('bluebird');
-const uuid1 = require('uuid/v1')
-var config = require('./config.js')
+const uuid1 = require('uuid/v1');
+var config = require('./config.js');
 
 var now;
 
 var Watcher = function(library) {
+    if (config.debug) {
+        console.log("Watcher created for path " + library.path);
+    }
+
     this.library = library;
     var path = library.path;
     if (path.charAt(path.length - 1) == '/') {
@@ -44,8 +48,17 @@ var Watcher = function(library) {
 
 
     function onAdd(path, info) {
+        if (config.debug) {
+            console.log("onAdd event received");
+        }
+
         return Song.findOne({where: {dir: Path.dirname(path), filename: Path.basename(path)}}).then((song) => {
             if (song) {
+
+                if (config.debug) {
+                    console.log("Song " + song.title + " already exists");
+                }
+
                 var stats = fs.statSync(path);
 
                 var fsMtime = new Date(stats.mtime);
@@ -61,6 +74,9 @@ var Watcher = function(library) {
                 }
             }
             else {
+                if (config.debug) {
+                    console.log("Song does not exist, creating new one");
+                }
                 saveMetadata(path, false);
             }
         })
@@ -113,8 +129,8 @@ var Watcher = function(library) {
 
     function songObject(metadata, path, id) {
         var picture;
-        if (metadata.common.picture) {
-            picture = metadata.common.picture[0]
+        if (metadata.common.picture && metadata.common.picture.length > 0) {
+            picture = Buffer.from(metadata.common.picture[0].data, 'binary').toString('base64')
         }
         if (!id) {
             id = uuid1()

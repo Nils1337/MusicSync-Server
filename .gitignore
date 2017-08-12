@@ -1,5 +1,5 @@
 node_modules
-music
 .vscode
 *.sqlite
-config.js
+desktop.ini
+music

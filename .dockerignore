@@ -1,0 +1,5 @@
+node_modules
+.vscode
+.gitignore
+npm-debug.log
+songs.sqlite

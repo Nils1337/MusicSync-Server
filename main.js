@@ -8,13 +8,11 @@ var Path = require('path');
 var config = require('./config.js')
 const uuid1 = require('uuid/v1')
 
+//var logStream = fs.createWriteStream("console.out", {flags: 'a'})
+//process.stdout.pipe(logStream)
+
 var app = express();
-/*http.createServer(function(request, response) {
-    response.writeHead(200, {'Content-Type': 'text/plain'});
-    response.end("Hello World\n");
-}).listen(8081);
-*/
-var now = new Date();
+var now = new Date(); 
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -84,8 +82,23 @@ router.route('/songs/:song_id')
 app.use('/', router);
 app.listen(config.port);
 
-Song.sync({force: config.dropSongsOnStart});
-Library.sync({force: true}).then(() => {
+if (config.debug) {
+    console.log("Starting Song sync");
+}
+Song.sync({force: config.dropSongsOnStart}).then(() => {
+    if (config.debug) {
+        console.log("Finished Song sync");
+    }
+});
+
+if (config.debug) {
+    console.log("Starting Library sync");
+}
+Library.sync({force: config.dropLibrariesOnStart}).then(() => {
+
+    if (config.debug) {
+        console.log("Finished Library sync")
+    }
     var promises = []
     for (library of config.libraries) {
         promises.push(updateOrCreateLibrary(library))

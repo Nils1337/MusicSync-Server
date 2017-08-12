@@ -3,7 +3,8 @@ var config = require('./config.js')
 
 var sequelize = new Sequelize('database', null, null, {
     dialect: 'sqlite',
-    storage: config.dbFileName
+    storage: config.dbFileName,
+    logging: config.debug ? console.out : false
 })
 
 var Library = sequelize.define('library', {
@@ -65,7 +66,7 @@ var Song = sequelize.define('song', {
         type: Sequelize.INTEGER
     },
     picture: {
-        type: Sequelize.BLOB
+        type: Sequelize.STRING
     },
     library: {
         type: Sequelize.STRING,

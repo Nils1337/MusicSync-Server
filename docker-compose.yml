@@ -1,0 +1,7 @@
+version: "2"
+
+services:
+  musicsync:
+    build: .
+    ports:
+      - "80:80"

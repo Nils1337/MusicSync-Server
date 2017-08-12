@@ -4,7 +4,9 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node main.js",
+    "debug": "node --inspect=5858 main.js"
   },
   "author": "nils",
   "license": "ISC",
@@ -15,7 +17,7 @@
     "express": "^4.15.2",
     "music-metadata": "^0.6.3",
     "sequelize": "^3.30.4",
-    "sqlite3": "^3.1.8",
+    "sqlite3": "^3.1.9",
     "uuid": "^3.1.0"
   }
 }
