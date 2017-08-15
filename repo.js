@@ -80,6 +80,5 @@ var Song = sequelize.define('song', {
 }, {
     timestamps: false
 })
-
 module.exports.Song = Song;
 module.exports.Library = Library;
