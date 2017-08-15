@@ -22,7 +22,16 @@ var Library = sequelize.define('library', {
         type: Sequelize.DATE
     }
 }, {
-    timestamps: false
+    timestamps: false,
+    instanceMethods: {
+        toJSON: function () {
+            var values = Object.assign({}, this.get());
+
+            delete values.path;
+            delete values.updated;
+            return values;
+        }
+    }
 })
 
 var Song = sequelize.define('song', {
@@ -78,7 +87,17 @@ var Song = sequelize.define('song', {
         type: Sequelize.DATE
     }
 }, {
-    timestamps: false
+    timestamps: false,
+    instanceMethods: {
+        toJSON: function () {
+            var values = Object.assign({}, this.get());
+
+            delete values.dir;
+            delete values.filename;
+            delete values.updated;
+            return values;
+        }
+    }
 })
 module.exports.Song = Song;
 module.exports.Library = Library;

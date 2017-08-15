@@ -1,6 +1,6 @@
 var config = {}
 
-config.debug = false;
+config.debug = true;
 config.port = 80;
 config.protocol = "http";
 config.dbFileName = "songs.sqlite"
@@ -11,12 +11,12 @@ config.deleteDelay = 30 * 1000;
 config.libraries = [];
 config.libraries.push({
     name: "Library1",
-    path: "/app/music/library1"
+    path: "C:/Users/nilsa/AppProject/music/library1/"
 })
 
 config.libraries.push({
     name: "Library2",
-    path: "/app/music/library2"
+    path: "C:/Users/nilsa/AppProject/music/library2/"
 })
 
 module.exports = config;

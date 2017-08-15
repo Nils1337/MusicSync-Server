@@ -35,12 +35,7 @@ router.route('/songs')
 
     .get((req, res) => {
         Song.findAll().then((songs) => {
-            songs.forEach((song) => {
-                delete song.filename
-                delete song.updated
-                delete song.dir
-            })
-            res.json(songs);
+            res.send(songs);
         })
     })
 
@@ -55,12 +50,7 @@ router.route('/:library_id/songs')
                 next(new Error('library with id ' + library_id + ' does not exist!'))
             }
             Song.findAll({where: {library: req.params.library_id}}).then((songs) => {
-                songs.forEach((song) => {
-                    delete song.filename
-                    delete song.updated
-                    delete song.dir
-                })
-                res.json(songs);
+                res.send(songs);
             })
         })
 
