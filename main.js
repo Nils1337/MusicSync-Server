@@ -7,6 +7,8 @@ var fs = require('fs');
 var Path = require('path');
 var config = require('./config.js')
 const uuid1 = require('uuid/v1')
+var http = require('http')
+var https = require('https')
 
 //var logStream = fs.createWriteStream("console.out", {flags: 'a'})
 //process.stdout.pipe(logStream)
@@ -69,7 +71,26 @@ router.route('/songs/download/:song_id')
     })
 
 app.use('/', router);
-app.listen(config.port);
+
+var server;
+
+if (config.protocol === "http") {
+    var httpServer = http.createServer(app)
+    httpServer.listen(config.port);
+    console.log("Http Server listening on " + config.port)
+}
+
+if (config.protocol === "https") {
+    var privateKey = fs.readFileSync(config.privateKeyPath)
+    var certificate = fs.readFileSync(config.certificatePath)
+
+    if (privateKey && certificate) {
+        var credentials = {key: privateKey, cert: certificate}
+        var httpsServer = https.createServer(credentials, app)
+        httpsServer.listen(config.port)
+        console.log("Https Server listening on " + config.port)
+    }
+}
 
 if (config.debug) {
     console.log("Starting Song sync");

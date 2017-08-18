@@ -2,11 +2,14 @@ var config = {}
 
 config.debug = false;
 config.port = 8080;
-config.protocol = "http";
 config.dbFileName = "songs.sqlite"
 config.dropSongsOnStart = false;
 config.dropLibrariesOnStart = false;
 config.deleteDelay = 30 * 1000;
+
+config.protocol = "http";
+config.privateKeyPath = "";
+config.certificatePath = "";
 
 config.libraries = [];
 config.libraries.push({
