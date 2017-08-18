@@ -1,7 +1,7 @@
 var config = {}
 
 config.debug = true;
-config.port = "80";
+config.port = 80;
 config.dbFileName = "songs.sqlite"
 config.dropSongsOnStart = false;
 config.dropLibrariesOnStart = false;
