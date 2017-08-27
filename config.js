@@ -1,7 +1,7 @@
 var config = {}
 
-config.debug = true;
-config.port = 80;
+config.debug = false;
+config.port = 8080;
 config.dbFileName = "songs.sqlite"
 config.dropSongsOnStart = false;
 config.dropLibrariesOnStart = false;
@@ -14,12 +14,12 @@ config.certificatePath = "";
 config.libraries = [];
 config.libraries.push({
     name: "Library1",
-    path: "C:/Users/nilsa/AppProject/music/library1/"
+    path: "music/library1"
 })
 
 config.libraries.push({
     name: "Library2",
-    path: "C:/Users/nilsa/AppProject/music/library2/"
+    path: "music/library2"
 })
 
 module.exports = config;

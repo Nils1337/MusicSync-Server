@@ -12,6 +12,7 @@ RUN npm install
 
 # copy source code
 COPY . .
+COPY config-docker.js config.js
 
 #expose access port
 EXPOSE 80
